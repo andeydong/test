@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+    <html>
+        <head>
+            <title>send mail by post</title>
+            <meta http-equiv="Content-Type"content="text/html;charset=UTF-8">
+        <style>
+            *{ margin:0; padding:0; font-size:18px;}
+            .send{ width:1200px;padding:20px 0}
+            .text{width:400px;}
+            .send h1{ font-size:30px; padding-bottom:10px}
+        </style>
+        </head>
+        <body>
+        <div class="send">
+            <form action="https://sendcloud.sohu.com/webapi/mail.send.json?use_maillist=true" method="post" enctype="multipart/form-data">
+            <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮件发送</h1>
+            <table>
+            <tr><td align="right" ><strong style="color:red">*</strong>api_user:&nbsp;</td><td><input style="width:400px;" type="text" name="api_user"/></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>api_key:&nbsp;</td><td><input class="text" type="text" name="api_key" /></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>use_maillist:&nbsp;</td><td><input class="text" type="text" name="use_maillist" value="true"/><span style="font-size:small;color:#f60;font-weight:bold;">(注:使用邮件列表时,use_maillist设为true,不使用设为false)</span></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>收件人邮箱:&nbsp;</td><td> <input class="text" type="text" name="to"/><span style="font-size:small;color:#f60;font-weight:bold;">(注:use_maillist为true时,输入邮箱列表名，否则输入邮箱地址，两个邮箱地址之间有分号隔开)</span></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>发件人邮箱:&nbsp;</td><td> <input class="text" type="text" name="from"/></td></tr>
+            <tr><td align="right" >发件人姓名:&nbsp;</td><td> <input class="text" type="text" name="fromname"/></td></tr>
+            <tr><td align="right" >回复人邮箱:&nbsp;</td><td> <input class="text" type="text" name="replyto"/></td></tr>
+            <tr><td align="right" >抄送人邮箱:&nbsp;</td><td> <input class="text" type="text" name="cc"/></td></tr>
+            <tr><td align="right" >密送人邮箱:&nbsp;</td><td> <input class="text" type="text" name="bcc"/></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>邮件主题:&nbsp;</td><td> <input class="text" type="text" name="subject"/></td></tr>
+            <tr><td align="right" ><strong style="color:red">*</strong>邮件内容:&nbsp;</td><td> <textarea rows="10" cols="41" name="html"></textarea></td></tr>
+            <tr><td></td><td><input type="submit" value="Submit" class="submit"/></td></tr>
+            </form> 
+        </div>
+        </body> 
+    </html>

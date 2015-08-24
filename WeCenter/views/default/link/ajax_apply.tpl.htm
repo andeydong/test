@@ -1,0 +1,25 @@
+<form action="link/ajax/apply/" method="post" id="quick_publish" class="form-horizontal">
+	<div class="alert alert-danger hide error_message"><em></em></div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">收件人账号：</label>
+		<div class="col-sm-9">
+			<input type="text" name="site_name" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">邮件内容：</label>
+		<div class="col-sm-9">
+			
+                        <textarea id="site_url" name="site_url" class="form-control"></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<p class="aw-text-color-999" style="margin-left:20px;">请在收件人账号中填写客户的邮箱，邮件内容填写发给客户的邮件内容信息 ！</p>
+	</div>
+        
+</form>
+<div class="modal-footer">
+	<span class="pull-right">
+		<button class="btn btn-large btn-success" onclick="AWS.ajax_post($('#quick_publish'), AWS.ajax_processer, 'error_message');">发送邮件</button>
+	</span>
+</div>
