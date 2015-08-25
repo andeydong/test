@@ -1039,6 +1039,13 @@ class ajax extends AWS_CONTROLLER
 		$update_data['province'] = htmlspecialchars($_POST['province']);
 
 		$update_data['city'] = htmlspecialchars($_POST['city']);
+                //新添加以下
+                if ($this->model('account')->check_url_token($_POST['user_name'], $this->user_id))
+                {
+                    H::ajax_json_output(AWS_APP::RSM(array('input' => 'user_name'), '-1', AWS_APP::lang()->_t('已经存在相同的昵称, 请重新填写')));
+                }
+                $update_data['user_name'] = htmlspecialchars($_POST['user_name']);
+                //新添加以上
 
 		if ($_POST['birthday_y'])
 		{
@@ -1251,7 +1258,22 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('当前帐号已经完善资料')));
 		}
 
-		$_POST['user_name'] = htmlspecialchars(trim($_POST['user_name']));		if ($check_result = $this->model('account')->check_username_char($_POST['user_name']))		{			H::ajax_json_output(AWS_APP::RSM(null, '-1', $check_result));		}				if ($this->user_info['user_name'] != $_POST['user_name'])		{			if ($this->model('account')->check_username_sensitive_words($_GET['username']) || $this->model('account')->check_username($_GET['username']))			{				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已被注册')));			}		}				$update_data['user_name'] = $_POST['user_name'];
+		$_POST['user_name'] = htmlspecialchars(trim($_POST['user_name']));
+
+		if ($check_result = $this->model('account')->check_username_char($_POST['user_name']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', $check_result));
+		}
+		
+		if ($this->user_info['user_name'] != $_POST['user_name'])
+		{
+			if ($this->model('account')->check_username_sensitive_words($_GET['username']) || $this->model('account')->check_username($_GET['username']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已被注册')));
+			}
+		}
+		
+		$update_data['user_name'] = $_POST['user_name'];
 
 		if (! H::valid_email($this->user_info['email']))
 		{

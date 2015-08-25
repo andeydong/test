@@ -26,15 +26,21 @@ class main extends AWS_CONTROLLER
         parent::__construct($process_setup);
         $output=array();
         header('Content-Type: text/html; charset=UTF-8');
-        //判断是否是指定的data变量      
-        $data = isset($_POST['data']) ? urldecode($_POST['data']) : '';
-        //$slash=stripslashes($_POST['data']);
-        if(strlen($data) < 1) 
-            { 
-                $data=  urldecode(file_get_contents('php://input')); 
-                $mess=array('status'=>-7,'msg'=>'提交的数据不是指定类型数据');
-                return $this->echoJson($mess);
-            }
+        //判断是否是指定的data变量   
+        $data1=urldecode(file_get_contents('php://input'));
+        if(empty($data1))
+        {
+            $mess=  array('status'=>-8,'msg'=>'请填写相关参数');
+            return $this->echoJson($mess);
+            
+        }
+        $data2=  substr($data1,0,6);
+        if(!($data2==='data={'))
+        {
+            $mess=  array('status'=>-7,'msg'=>'提交的数据不是指定类型数据');
+            return $this->echoJson($mess);
+        }
+        $data=  substr($data1,5);
         //转换json成数组
         $de_json = json_decode($data,TRUE);
         $this->UserId=$de_json['UserId'];
@@ -102,7 +108,6 @@ class main extends AWS_CONTROLLER
                  $quesIds=$this->model('QuestionApi')->get_questionId($this->Email,  $this->Question);       
                  $this->model('question')->update_question($quesIds[0][question_id], $this->Email, $this->Question, '2', $verified = true, $modify_reason = null, $anonymous = null, $category_id = null);
                  $output=array('status'=>0,'msg'=>'提交成功');
-                 echo $this->echoJson($output);
                  return $this->echoJson($output);
                 }
                 else 
@@ -129,54 +134,6 @@ class main extends AWS_CONTROLLER
         return json_encode($data,JSON_UNESCAPED_UNICODE);
         
     }
-    // 模拟提交数据函数 
-    public function wcquestion_post($url,$data)
-    {      
-        $curl = curl_init(); // 启动一个CURL会话      
-        curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址                        
-        curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求      
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data); // Post提交的数据包                  
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环            
-        $tmpInfo = curl_exec($curl); // 执行操作      
-        if (curl_errno($curl)) {      
-           echo 'Errno'.curl_error($curl);      
-        }      
-        curl_close($curl); // 关键CURL会话      
-        return $tmpInfo; // 返回数据      
-    }
-    //使用sendcloud发送邮件
-    public function send_mail($toemail,$biaoti,$emaildetail) 
-    {
-      $url = 'http://sendcloud.sohu.com/webapi/mail.send.json';
-      $API_USER = '270965897_test_TJBTi8';
-      $API_KEY = 'VLSH82H6dDgfa65W';
-
-      //不同于登录SendCloud站点的帐号，您需要登录后台创建发信子帐号，使用子帐号和密码才可以进行邮件的发送。
-      $param = array(
-          'api_user' => $API_USER,
-          'api_key' => $API_KEY,
-          'from' => 'service@sendcloud.im',
-          'fromname' => 'SendCloud测试邮件',
-          'to' => $toemail,
-          'subject' => $biaoti,
-          'html' => $emaildetail,
-          'resp_email_id' => 'true');
-      
-      $data = http_build_query($param);
-
-      $options = array(
-          'http' => array(
-              'method'  => 'POST',
-              'header' => 'Content-Type: application/x-www-form-urlencoded',
-              'content' => $data
-      ));
-
-      $context  = stream_context_create($options);
-      $result = file_get_contents($url, false, $context);
-
-      return $result;
-    }
-    
     
       
 }
